@@ -24,6 +24,7 @@ __all__ = ['ezrss',
            'womble',
            'btn',
            'nzbx',
+           'publichd',
            'omgwtfnzbs'
            ]
 

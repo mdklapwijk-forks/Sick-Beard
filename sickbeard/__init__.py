@@ -32,6 +32,7 @@ from threading import Lock
 from sickbeard import providers, metadata
 
 from providers import ezrss, tvtorrents, torrentleech, btn, nzbsrus, newznab, womble, nzbx, omgwtfnzbs, hdbits
+from providers import publichd
 from sickbeard.config import CheckSection, check_setting_int, check_setting_str, ConfigMigrator
 
 from sickbeard import searchCurrent, searchBacklog, showUpdater, versionChecker, properFinder, autoPostProcesser
@@ -160,6 +161,9 @@ EZRSS = False
 HDBITS = False
 HDBITS_USERNAME = None
 HDBITS_PASSKEY = None
+
+PUBLICHD = False
+PREFER_MAGNETS = None
 
 TVTORRENTS = False
 TVTORRENTS_DIGEST = None
@@ -339,6 +343,7 @@ def initialize(consoleLogging=True):
                 USE_PLEX, PLEX_NOTIFY_ONSNATCH, PLEX_NOTIFY_ONDOWNLOAD, PLEX_UPDATE_LIBRARY, \
                 PLEX_SERVER_HOST, PLEX_HOST, PLEX_USERNAME, PLEX_PASSWORD, \
                 showUpdateScheduler, __INITIALIZED__, LAUNCH_BROWSER, showList, loadingShowList, \
+                PUBLICHD, \
                 NZBS, NZBS_UID, NZBS_HASH, EZRSS, HDBITS, HDBITS_USERNAME, HDBITS_PASSKEY, TVTORRENTS, TVTORRENTS_DIGEST, TVTORRENTS_HASH, BTN, BTN_API_KEY, TORRENTLEECH, TORRENTLEECH_KEY, \
                 TORRENT_DIR, USENET_RETENTION, SOCKET_TIMEOUT, \
                 SEARCH_FREQUENCY, DEFAULT_SEARCH_FREQUENCY, BACKLOG_SEARCH_FREQUENCY, \
@@ -561,6 +566,9 @@ def initialize(consoleLogging=True):
         HDBITS = bool(check_setting_int(CFG, 'HDBITS', 'hdbits', 0))
         HDBITS_USERNAME = check_setting_str(CFG, 'HDBITS', 'hdbits_username', '')
         HDBITS_PASSKEY = check_setting_str(CFG, 'HDBITS', 'hdbits_passkey', '')
+
+        CheckSection(CFG, 'PUBLICHD')
+        PUBLICHD = bool(check_setting_int(CFG, 'PUBLICHD', 'publichd', 1))
 
         CheckSection(CFG, 'TVTORRENTS')
         TVTORRENTS = bool(check_setting_int(CFG, 'TVTORRENTS', 'tvtorrents', 0))
@@ -1067,6 +1075,9 @@ def save_config():
     new_config['HDBITS']['hdbits'] = int(HDBITS)
     new_config['HDBITS']['hdbits_username'] = HDBITS_USERNAME
     new_config['HDBITS']['hdbits_passkey'] = HDBITS_PASSKEY
+
+    new_config['PUBLICHD'] = {}
+    new_config['PUBLICHD']['publichd'] = int(PUBLICHD)
 
     new_config['TVTORRENTS'] = {}
     new_config['TVTORRENTS']['tvtorrents'] = int(TVTORRENTS)
